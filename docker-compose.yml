@@ -7,22 +7,21 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "/etc/nginx/certs"
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
-  letsencrypt-nginx-proxy-companion:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+  letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: letsencrypt
-    volumes_from:
-      - nginx-proxy
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    volumes_from:
-      - nginx-proxy
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/nginx/certs
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
   app:
     image: awsdevopro/apache-php56
-    container_name: www.somarpon.com
+    container_name: app
     volumes:
       - ./public:/var/www/html
     environment:
