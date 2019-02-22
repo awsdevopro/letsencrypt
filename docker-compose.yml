@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 services:
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./public:/var/www/html
     environment:
-      - VIRTUAL_HOST: somarpon.com,www.somarpon.com,app.somarpon.com,git.somarpon.com,pf.somarpon.com
-      - LETSENCRYPT_HOST: somarpon.com,www.somarpon.com,app.somarpon.com,git.somarpon.com,pf.somarpon.com
-      - LETSENCRYPT_EMAIL: awsdevopro@gmail.com
+      - VIRTUAL_HOST=somarpon.com,www.somarpon.com,app.somarpon.com,git.somarpon.com,pf.somarpon.com
+      - LETSENCRYPT_HOST=somarpon.com,www.somarpon.com,app.somarpon.com,git.somarpon.com,pf.somarpon.com
+      - LETSENCRYPT_EMAIL=awsdevopro@gmail.com
   
