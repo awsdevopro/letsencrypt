@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -8,28 +8,25 @@ services:
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "./volumes/certs:/etc/nginx/certs:ro"
-      - "./volumes/vhost.d:/etc/nginx/vhost.d"
-      - "./volumes/html:/usr/share/nginx/html"
+      - "/etc/nginx/certs"
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
   letsencrypt-nginx-proxy-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
     volumes_from:
       - nginx-proxy
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./volumes/certs:/etc/nginx/certs:rw"
-      - "./volumes/vhost.d:/etc/nginx/vhost.d"
-      - "./volumes/html:/usr/share/nginx/html"
-  somewebsite:
-    image: nginx
+    volumes_from:
+      - nginx-proxy
+  app:
+    image: awsdevopro/apache-php56
+    container_name: www.somarpon.com
     volumes:
-      # specify your public html here
-      - ./public:/usr/local/nginx/html
-      # specify your conf here
-    #  - ../somewebsite.com/conf:/etc/nginx/conf.d:ro
+      - ./public:/var/www/html
     environment:
-      - VIRTUAL_HOST=somarpon.com,www.somarpon.com
-      - LETSENCRYPT_HOST=somarpon.com,www.somarpon.com
-      - LETSENCRYPT_EMAIL=awsdevopro@gmail.com
+      - VIRTUAL_HOST: somarpon.com,www.somarpon.com,app.somarpon.com,git.somarpon.com,pf.somarpon.com
+      - LETSENCRYPT_HOST: somarpon.com,www.somarpon.com,app.somarpon.com,git.somarpon.com,pf.somarpon.com
+      - LETSENCRYPT_EMAIL: awsdevopro@gmail.com
   
